@@ -1,15 +1,26 @@
 import { Router } from 'express';
 import { TodoController } from '../controllers/TodoController';
 import { InMemoryTodoRepository } from '../../infrastructure/repositories/InMemoryTodoRepository';
+import { WebSocketService } from '../../infrastructure/websocket/WebSocketService';
 
 const router = Router();
 const todoRepository = new InMemoryTodoRepository();
-const todoController = new TodoController(todoRepository);
 
-router.post('/todos', todoController.create.bind(todoController));
-router.get('/todos', todoController.list.bind(todoController));
-router.put('/todos/:id', todoController.update.bind(todoController));
-router.patch('/todos/:id/toggle', todoController.toggleComplete.bind(todoController));
-router.delete('/todos/:id', todoController.delete.bind(todoController));
+// Get WebSocket service from app
+const getWebSocketService = (req: any): WebSocketService => {
+  return req.app.get('webSocketService');
+};
+
+// Create controller with WebSocket service
+const createController = (req: any) => {
+  const webSocketService = getWebSocketService(req);
+  return new TodoController(todoRepository, webSocketService);
+};
+
+router.post('/todos', (req, res) => createController(req).create(req, res));
+router.get('/todos', (req, res) => createController(req).list(req, res));
+router.put('/todos/:id', (req, res) => createController(req).update(req, res));
+router.patch('/todos/:id/toggle', (req, res) => createController(req).toggleComplete(req, res));
+router.delete('/todos/:id', (req, res) => createController(req).delete(req, res));
 
 export default router; 
