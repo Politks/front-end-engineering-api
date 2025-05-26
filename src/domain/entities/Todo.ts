@@ -43,9 +43,17 @@ export class Todo {
     this.props.updatedAt = new Date();
   }
 
-  update(title: string, description: string): void {
+  updateTitle(title: string): void {
     this.props.title = title;
+    this.props.updatedAt = new Date();
+  }
+
+  updateDescription(description: string): void {
     this.props.description = description;
     this.props.updatedAt = new Date();
+  }
+
+  toJSON(): TodoProps {
+    return { ...this.props };
   }
 } 
