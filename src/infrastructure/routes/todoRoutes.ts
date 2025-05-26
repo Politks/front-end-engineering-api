@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import { ITodoRepository } from '../../domain/repositories/ITodoRepository';
-import { CreateTodoUseCase } from '../../application/use-cases/CreateTodoUseCase';
+import { CreateTodoUseCase } from '../../application/use-cases/CreateTodo';
 import { GetTodoUseCase } from '../../application/use-cases/GetTodoUseCase';
 import { ListTodosUseCase } from '../../application/use-cases/ListTodosUseCase';
 import { UpdateTodoUseCase } from '../../application/use-cases/UpdateTodoUseCase';
